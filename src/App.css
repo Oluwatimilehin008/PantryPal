@@ -52,6 +52,10 @@
   color: #e27d52;
 }
 
+.main-nav a.active {
+  color: #e27d52;
+}
+
 .page-content {
   max-width: 1096px;
   min-height: calc(100vh - 150px);
