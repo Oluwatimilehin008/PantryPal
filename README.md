@@ -1,32 +1,56 @@
-# React + TypeScript + Vite
+# PantryPal
 
-This template provides a minimal setup to get React working in Vite with HMR and some Oxlint rules.
+PantryPal is a React recipe finder that matches ingredients in your pantry with Spoonacular recipes and nutrition information.
 
-Currently, two official plugins are available:
+## Run locally
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+1. Install dependencies:
 
-## React Compiler
+   ```bash
+   npm install
+   ```
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+2. Create a `.env.local` file in the project root:
 
-## Expanding the Oxlint configuration
+   ```env
+   VITE_SPOONACULAR_API_KEY=your_spoonacular_api_key
+   ```
 
-If you are developing a production application, we recommend enabling type-aware lint rules by installing `oxlint-tsgolint` and editing `.oxlintrc.json`:
+3. Start the development server:
 
-```json
-{
-  "$schema": "./node_modules/oxlint/configuration_schema.json",
-  "plugins": ["react", "typescript", "oxc"],
-  "options": {
-    "typeAware": true
-  },
-  "rules": {
-    "react/rules-of-hooks": "error",
-    "react/only-export-components": ["warn", { "allowConstantExport": true }]
-  }
-}
+   ```bash
+   npm run dev
+   ```
+
+Open the local URL shown in the terminal, usually `http://localhost:5173`.
+
+The Spoonacular API key is read from the local environment and is not committed to Git.
+
+## Available commands
+
+```bash
+npm run dev       # Start the development server
+npm run build     # Create a production build
+npm run lint      # Run lint checks
+npm run deploy    # Build and publish to GitHub Pages
 ```
 
-See the [Oxlint rules documentation](https://oxc.rs/docs/guide/usage/linter/rules) for the full list of rules and categories.
+## Deploy to GitHub Pages
+
+1. Create a public GitHub repository and push this project to it.
+2. Make sure `.env.local` contains a valid Spoonacular key.
+3. Run:
+
+   ```bash
+   npm run deploy
+   ```
+
+4. In GitHub, open **Settings > Pages** and choose the `gh-pages` branch as the deployment source.
+
+The published URL will be:
+
+```text
+https://YOUR-GITHUB-USERNAME.github.io/YOUR-REPOSITORY-NAME/
+```
+
+The app uses hash-based routing so its pages work correctly on GitHub Pages.
