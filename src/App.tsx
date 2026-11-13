@@ -61,7 +61,12 @@ function HomePage() {
   )
 }
 
-function FindRecipesPage() {
+type RecipeActions = {
+  favorites: Recipe[]
+  onToggleFavorite: (recipe: Recipe) => void
+}
+
+function FindRecipesPage({ favorites, onToggleFavorite }: RecipeActions) {
   const [ingredients, setIngredients] = useState<string[]>([])
   const [input, setInput] = useState('')
   const [recipes, setRecipes] = useState<Recipe[]>([])
@@ -142,7 +147,17 @@ function FindRecipesPage() {
                 <article className="recipe-card" key={recipe.id}>
                   <img src={recipe.image} alt={recipe.title} />
                   <div className="recipe-card-body">
-                    <h2>{recipe.title}</h2>
+                    <div className="recipe-title-row">
+                      <h2>{recipe.title}</h2>
+                      <button
+                        className={favorites.some((favorite) => favorite.id === recipe.id) ? 'favorite-button selected' : 'favorite-button'}
+                        type="button"
+                        aria-label={`Favorite ${recipe.title}`}
+                        onClick={() => onToggleFavorite(recipe)}
+                      >
+                        <Heart size={17} fill={favorites.some((favorite) => favorite.id === recipe.id) ? 'currentColor' : 'none'} />
+                      </button>
+                    </div>
                     <p>{recipe.readyInMinutes} min · serves {recipe.servings}</p>
                     <div className="nutrition-row">
                       <span>{calories ? `${Math.round(calories.amount)} ${calories.unit}` : 'Calories n/a'}</span>
@@ -166,7 +181,7 @@ function FindRecipesPage() {
   )
 }
 
-function FavoritesPage() {
+function FavoritesPage({ favorites, onToggleFavorite }: RecipeActions) {
   return (
     <>
       <section className="page-heading">
@@ -174,27 +189,57 @@ function FavoritesPage() {
         <h1>Favorite recipes</h1>
         <p>Save recipes you love and find them quickly next time.</p>
       </section>
-      <section className="empty-page">
-        <div className="empty-icon"><Heart size={28} /></div>
-        <h2>No favorites yet</h2>
-        <p>When you find a recipe worth making again, save it here.</p>
-        <NavLink className="secondary-button" to="/find-recipes">
-          Find a recipe <ArrowRight size={17} />
-        </NavLink>
-      </section>
+      {favorites.length === 0 ? (
+        <section className="empty-page">
+          <div className="empty-icon"><Heart size={28} /></div>
+          <h2>No favorites yet</h2>
+          <p>When you find a recipe worth making again, save it here.</p>
+          <NavLink className="secondary-button" to="/find-recipes">
+            Find a recipe <ArrowRight size={17} />
+          </NavLink>
+        </section>
+      ) : (
+        <section className="favorite-grid">
+          {favorites.map((recipe) => (
+            <article className="recipe-card" key={recipe.id}>
+              <img src={recipe.image} alt={recipe.title} />
+              <div className="recipe-card-body">
+                <div className="recipe-title-row">
+                  <h2>{recipe.title}</h2>
+                  <button className="favorite-button selected" type="button" aria-label={`Remove ${recipe.title} from favorites`} onClick={() => onToggleFavorite(recipe)}>
+                    <Heart size={17} fill="currentColor" />
+                  </button>
+                </div>
+                <p>{recipe.readyInMinutes} min · serves {recipe.servings}</p>
+              </div>
+            </article>
+          ))}
+        </section>
+      )}
     </>
   )
 }
 
 function App() {
+  const [favorites, setFavorites] = useState<Recipe[]>([])
+
+  function toggleFavorite(recipe: Recipe) {
+    setFavorites((currentFavorites) => {
+      const isFavorite = currentFavorites.some((favorite) => favorite.id === recipe.id)
+      return isFavorite
+        ? currentFavorites.filter((favorite) => favorite.id !== recipe.id)
+        : [...currentFavorites, recipe]
+    })
+  }
+
   return (
     <div className="app-shell">
       <Header />
       <main className="page-content">
         <Routes>
           <Route path="/" element={<HomePage />} />
-          <Route path="/find-recipes" element={<FindRecipesPage />} />
-          <Route path="/favorites" element={<FavoritesPage />} />
+          <Route path="/find-recipes" element={<FindRecipesPage favorites={favorites} onToggleFavorite={toggleFavorite} />} />
+          <Route path="/favorites" element={<FavoritesPage favorites={favorites} onToggleFavorite={toggleFavorite} />} />
         </Routes>
       </main>
       <footer>PantryPal <span>·</span> Turn what you have into something delicious.</footer>

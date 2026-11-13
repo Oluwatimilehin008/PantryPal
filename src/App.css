@@ -380,6 +380,35 @@
   font-size: .75rem;
 }
 
+.recipe-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.favorite-button {
+  flex: 0 0 auto;
+  padding: 2px;
+  border: 0;
+  color: #c5ccc6;
+  background: transparent;
+  cursor: pointer;
+}
+
+.favorite-button:hover,
+.favorite-button.selected {
+  color: #e27d52;
+}
+
+.favorite-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+  max-width: 650px;
+  margin: 45px auto 0;
+}
+
 .nutrition-row {
   display: flex;
   justify-content: space-between;
@@ -516,6 +545,10 @@ footer span {
   }
 
   .recipe-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .favorite-grid {
     grid-template-columns: 1fr;
   }
 }
