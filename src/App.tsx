@@ -60,11 +60,30 @@ function HomePage() {
 
 function FindRecipesPage() {
   return (
-    <section className="welcome-panel">
-      <p className="eyebrow">Recipe finder</p>
-      <h1>Find recipes from your pantry.</h1>
-      <p>Your ingredient search will live on this screen.</p>
-    </section>
+    <>
+      <section className="page-heading">
+        <p className="eyebrow"><Search size={16} /> Recipe finder</p>
+        <h1>What do you have on hand?</h1>
+        <p>Add a few ingredients and we&apos;ll find recipes that fit your pantry.</p>
+      </section>
+      <section className="finder-card">
+        <form className="ingredient-form" onSubmit={(event) => event.preventDefault()}>
+          <label htmlFor="ingredient">Your ingredients</label>
+          <div className="input-row">
+            <input id="ingredient" placeholder="e.g. tomatoes, rice, eggs" />
+            <button className="primary-button" type="submit">Add</button>
+          </div>
+        </form>
+        <div className="ingredient-list">
+          <p className="empty-message">Your ingredients will appear here.</p>
+        </div>
+        <div className="finder-placeholder">
+          <ChefHat size={30} />
+          <h2>Recipes will appear here</h2>
+          <p>Connect your pantry to discover your next favorite meal.</p>
+        </div>
+      </section>
+    </>
   )
 }
 
