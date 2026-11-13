@@ -390,6 +390,56 @@
   font-weight: 700;
 }
 
+.empty-page {
+  max-width: 550px;
+  margin: 50px auto;
+  padding: 55px 25px;
+  border: 1px dashed #ddd7cc;
+  border-radius: 18px;
+  text-align: center;
+}
+
+.empty-icon {
+  display: grid;
+  width: 58px;
+  height: 58px;
+  place-items: center;
+  margin: 0 auto 15px;
+  border-radius: 50%;
+  color: #e27d52;
+  background: #fbe9df;
+}
+
+.empty-page h2 {
+  color: #34443a;
+  font-size: 1.2rem;
+}
+
+.empty-page p {
+  margin-bottom: 22px;
+  color: #89958c;
+  font-size: .9rem;
+}
+
+.secondary-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 9px;
+  border-radius: 10px;
+  padding: 13px 20px;
+  color: #e27d52;
+  background: #fbe9df;
+  font-size: .9rem;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.secondary-button:hover {
+  color: white;
+  background: #e27d52;
+}
+
 .welcome-panel {
   margin: 0 0 15px;
 }

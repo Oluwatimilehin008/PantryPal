@@ -168,11 +168,21 @@ function FindRecipesPage() {
 
 function FavoritesPage() {
   return (
-    <section className="welcome-panel">
-      <p className="eyebrow">Favorites</p>
-      <h1>Keep your favorite recipes close.</h1>
-      <p>Saved recipes will appear on this screen.</p>
-    </section>
+    <>
+      <section className="page-heading">
+        <p className="eyebrow"><Heart size={16} /> Your collection</p>
+        <h1>Favorite recipes</h1>
+        <p>Save recipes you love and find them quickly next time.</p>
+      </section>
+      <section className="empty-page">
+        <div className="empty-icon"><Heart size={28} /></div>
+        <h2>No favorites yet</h2>
+        <p>When you find a recipe worth making again, save it here.</p>
+        <NavLink className="secondary-button" to="/find-recipes">
+          Find a recipe <ArrowRight size={17} />
+        </NavLink>
+      </section>
+    </>
   )
 }
 
