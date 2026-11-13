@@ -279,6 +279,26 @@
   font-size: .8rem;
 }
 
+.ingredient-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 7px 10px;
+  border-radius: 20px;
+  color: #48705b;
+  background: #e8f2ea;
+  font-size: .8rem;
+}
+
+.ingredient-pill button {
+  display: grid;
+  padding: 0;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  cursor: pointer;
+}
+
 .finder-placeholder {
   margin-top: 28px;
   padding: 35px 20px;

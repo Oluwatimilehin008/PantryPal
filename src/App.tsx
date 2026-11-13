@@ -1,5 +1,6 @@
-import { ArrowRight, ChefHat, Heart, Home, Leaf, Search, Sparkles } from 'lucide-react'
+import { ArrowRight, ChefHat, Heart, Home, Leaf, Search, Sparkles, X } from 'lucide-react'
 import { NavLink, Route, Routes } from 'react-router-dom'
+import { useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import './App.css'
 
@@ -59,6 +60,18 @@ function HomePage() {
 }
 
 function FindRecipesPage() {
+  const [ingredients, setIngredients] = useState<string[]>([])
+  const [input, setInput] = useState('')
+
+  function addIngredient(event: React.FormEvent) {
+    event.preventDefault()
+    const value = input.trim().toLowerCase()
+    if (value && !ingredients.includes(value)) {
+      setIngredients([...ingredients, value])
+      setInput('')
+    }
+  }
+
   return (
     <>
       <section className="page-heading">
@@ -67,15 +80,32 @@ function FindRecipesPage() {
         <p>Add a few ingredients and we&apos;ll find recipes that fit your pantry.</p>
       </section>
       <section className="finder-card">
-        <form className="ingredient-form" onSubmit={(event) => event.preventDefault()}>
+        <form className="ingredient-form" onSubmit={addIngredient}>
           <label htmlFor="ingredient">Your ingredients</label>
           <div className="input-row">
-            <input id="ingredient" placeholder="e.g. tomatoes, rice, eggs" />
+            <input
+              id="ingredient"
+              value={input}
+              onChange={(event) => setInput(event.target.value)}
+              placeholder="e.g. tomatoes, rice, eggs"
+            />
             <button className="primary-button" type="submit">Add</button>
           </div>
         </form>
-        <div className="ingredient-list">
-          <p className="empty-message">Your ingredients will appear here.</p>
+        <div className="ingredient-list" aria-live="polite">
+          {ingredients.length === 0 && <p className="empty-message">Your ingredients will appear here.</p>}
+          {ingredients.map((ingredient) => (
+            <span className="ingredient-pill" key={ingredient}>
+              {ingredient}
+              <button
+                type="button"
+                aria-label={`Remove ${ingredient}`}
+                onClick={() => setIngredients(ingredients.filter((item) => item !== ingredient))}
+              >
+                <X size={14} />
+              </button>
+            </span>
+          ))}
         </div>
         <div className="finder-placeholder">
           <ChefHat size={30} />
