@@ -1,6 +1,6 @@
 import { ArrowRight, ChefHat, Heart, Home, Leaf, Search, Sparkles, X } from 'lucide-react'
 import { NavLink, Route, Routes } from 'react-router-dom'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { getNutrient, searchRecipes } from './api/spoonacular'
 import type { Recipe } from './api/spoonacular'
 import { useNavigate } from 'react-router-dom'
@@ -220,8 +220,24 @@ function FavoritesPage({ favorites, onToggleFavorite }: RecipeActions) {
   )
 }
 
+function getSavedFavorites(): Recipe[] {
+  const savedFavorites = localStorage.getItem('pantrypal-favorites')
+  if (!savedFavorites) return []
+
+  try {
+    const parsedFavorites: unknown = JSON.parse(savedFavorites)
+    return Array.isArray(parsedFavorites) ? parsedFavorites as Recipe[] : []
+  } catch {
+    return []
+  }
+}
+
 function App() {
-  const [favorites, setFavorites] = useState<Recipe[]>([])
+  const [favorites, setFavorites] = useState<Recipe[]>(getSavedFavorites)
+
+  useEffect(() => {
+    localStorage.setItem('pantrypal-favorites', JSON.stringify(favorites))
+  }, [favorites])
 
   function toggleFavorite(recipe: Recipe) {
     setFavorites((currentFavorites) => {
