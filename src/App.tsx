@@ -134,10 +134,16 @@ function FindRecipesPage() {
         </button>
         {error && <p className="api-error" role="alert">{error}</p>}
         {recipes.length > 0 && !error && (
-          <div className="finder-placeholder">
-            <ChefHat size={30} />
-            <h2>{recipes.length} recipes found</h2>
-            <p>Recipe cards will be added in the next step.</p>
+          <div className="recipe-grid">
+            {recipes.map((recipe) => (
+              <article className="recipe-card" key={recipe.id}>
+                <img src={recipe.image} alt={recipe.title} />
+                <div className="recipe-card-body">
+                  <h2>{recipe.title}</h2>
+                  <p>{recipe.readyInMinutes} min · serves {recipe.servings}</p>
+                </div>
+              </article>
+            ))}
           </div>
         )}
         {recipes.length === 0 && !error && !isLoading && (
