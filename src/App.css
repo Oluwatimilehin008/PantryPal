@@ -323,6 +323,25 @@
   font-size: .84rem;
 }
 
+.search-button {
+  width: 100%;
+  margin-top: 18px;
+}
+
+.search-button:disabled {
+  opacity: .65;
+  cursor: wait;
+}
+
+.api-error {
+  margin: 18px 0 0;
+  padding: 12px;
+  border-radius: 9px;
+  color: #a64b37;
+  background: #fff0eb;
+  font-size: .82rem;
+}
+
 .welcome-panel {
   margin: 0 0 15px;
 }

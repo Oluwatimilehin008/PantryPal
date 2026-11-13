@@ -1,6 +1,8 @@
 import { ArrowRight, ChefHat, Heart, Home, Leaf, Search, Sparkles, X } from 'lucide-react'
 import { NavLink, Route, Routes } from 'react-router-dom'
 import { useState } from 'react'
+import { searchRecipes } from './api/spoonacular'
+import type { Recipe } from './api/spoonacular'
 import { useNavigate } from 'react-router-dom'
 import './App.css'
 
@@ -62,6 +64,9 @@ function HomePage() {
 function FindRecipesPage() {
   const [ingredients, setIngredients] = useState<string[]>([])
   const [input, setInput] = useState('')
+  const [recipes, setRecipes] = useState<Recipe[]>([])
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState('')
 
   function addIngredient(event: React.FormEvent) {
     event.preventDefault()
@@ -69,6 +74,23 @@ function FindRecipesPage() {
     if (value && !ingredients.includes(value)) {
       setIngredients([...ingredients, value])
       setInput('')
+    }
+  }
+
+  async function findRecipes() {
+    if (ingredients.length === 0) {
+      setError('Add at least one ingredient first.')
+      return
+    }
+
+    setError('')
+    setIsLoading(true)
+    try {
+      setRecipes(await searchRecipes(ingredients))
+    } catch (requestError) {
+      setError(requestError instanceof Error ? requestError.message : 'Something went wrong while searching.')
+    } finally {
+      setIsLoading(false)
     }
   }
 
@@ -107,11 +129,24 @@ function FindRecipesPage() {
             </span>
           ))}
         </div>
-        <div className="finder-placeholder">
-          <ChefHat size={30} />
-          <h2>Recipes will appear here</h2>
-          <p>Connect your pantry to discover your next favorite meal.</p>
-        </div>
+        <button className="primary-button search-button" type="button" onClick={findRecipes} disabled={isLoading}>
+          {isLoading ? 'Searching...' : 'Find recipes'} <Search size={17} />
+        </button>
+        {error && <p className="api-error" role="alert">{error}</p>}
+        {recipes.length > 0 && !error && (
+          <div className="finder-placeholder">
+            <ChefHat size={30} />
+            <h2>{recipes.length} recipes found</h2>
+            <p>Recipe cards will be added in the next step.</p>
+          </div>
+        )}
+        {recipes.length === 0 && !error && !isLoading && (
+          <div className="finder-placeholder">
+            <ChefHat size={30} />
+            <h2>Recipes will appear here</h2>
+            <p>Connect your pantry to discover your next favorite meal.</p>
+          </div>
+        )}
       </section>
     </>
   )
