@@ -1,7 +1,7 @@
 import { ArrowRight, ChefHat, Heart, Home, Leaf, Search, Sparkles, X } from 'lucide-react'
 import { NavLink, Route, Routes } from 'react-router-dom'
 import { useState } from 'react'
-import { searchRecipes } from './api/spoonacular'
+import { getNutrient, searchRecipes } from './api/spoonacular'
 import type { Recipe } from './api/spoonacular'
 import { useNavigate } from 'react-router-dom'
 import './App.css'
@@ -135,15 +135,23 @@ function FindRecipesPage() {
         {error && <p className="api-error" role="alert">{error}</p>}
         {recipes.length > 0 && !error && (
           <div className="recipe-grid">
-            {recipes.map((recipe) => (
-              <article className="recipe-card" key={recipe.id}>
-                <img src={recipe.image} alt={recipe.title} />
-                <div className="recipe-card-body">
-                  <h2>{recipe.title}</h2>
-                  <p>{recipe.readyInMinutes} min · serves {recipe.servings}</p>
-                </div>
-              </article>
-            ))}
+            {recipes.map((recipe) => {
+              const calories = getNutrient(recipe, 'Calories')
+              const protein = getNutrient(recipe, 'Protein')
+              return (
+                <article className="recipe-card" key={recipe.id}>
+                  <img src={recipe.image} alt={recipe.title} />
+                  <div className="recipe-card-body">
+                    <h2>{recipe.title}</h2>
+                    <p>{recipe.readyInMinutes} min · serves {recipe.servings}</p>
+                    <div className="nutrition-row">
+                      <span>{calories ? `${Math.round(calories.amount)} ${calories.unit}` : 'Calories n/a'}</span>
+                      <span>{protein ? `${Math.round(protein.amount)}${protein.unit} protein` : 'Protein n/a'}</span>
+                    </div>
+                  </div>
+                </article>
+              )
+            })}
           </div>
         )}
         {recipes.length === 0 && !error && !isLoading && (

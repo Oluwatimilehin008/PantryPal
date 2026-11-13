@@ -380,6 +380,16 @@
   font-size: .75rem;
 }
 
+.nutrition-row {
+  display: flex;
+  justify-content: space-between;
+  gap: 5px;
+  margin-top: 12px;
+  color: #48705b;
+  font-size: .68rem;
+  font-weight: 700;
+}
+
 .welcome-panel {
   margin: 0 0 15px;
 }
